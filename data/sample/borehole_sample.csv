@@ -1,0 +1,13 @@
+Borehole_ID,From_m,To_m,Lithology,Rock_Colour,Weathering,Mineralization,Description
+BH-001,0.0,1.5,Topsoil,Brown,Highly Weathered,None,Loose soil with organic matter
+BH-001,1.5,4.0,Laterite,Red-Brown,Highly Weathered,Goethite,Limonitic lateritic material
+BH-001,4.0,8.0,Weathered Shale,Yellowish Brown,Moderately Weathered,Minor Hematite,Fractured and altered shale
+BH-001,8.0,18.0,BHQ,Grey and White,Slightly Weathered,Disseminated Hematite,Banded hematite quartzite with alternating quartz and hematite bands
+BH-001,18.0,24.0,Hematite Ore,Steel Grey,Slightly Weathered,High Hematite,Massive to laminated hematite-rich iron ore
+BH-001,24.0,30.0,Fresh Quartzite,White and Grey,Fresh,None,Compact quartzite with minimal alteration
+BH-002,0.0,1.2,Topsoil,Brown,Highly Weathered,None,Loose brown soil
+BH-002,1.2,3.5,Laterite,Red,Highly Weathered,Goethite,Lateritic soil with iron oxide enrichment
+BH-002,3.5,9.0,Weathered Shale,Brown and Grey,Moderately Weathered,Minor Hematite,Weathered shale with fractures
+BH-002,9.0,15.0,BHQ,Grey and White,Slightly Weathered,Disseminated Hematite,Banded hematite quartzite
+BH-002,15.5,21.0,Hematite Ore,Dark Grey,Slightly Weathered,High Hematite,Hematite-rich mineralized interval
+BH-002,21.0,28.0,Fresh Quartzite,White,Fresh,None,Hard compact quartzite
