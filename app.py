@@ -188,52 +188,87 @@ selected_data = processed_data[
 ].copy()
 
 
+
 # --------------------------------------------------
 # Geological log visualization
 # --------------------------------------------------
 
-plot_data = selected_data.copy()
+import plotly.graph_objects as go
 
-plot_data["Color"] = plot_data["Lithology"].apply(
-    get_lithology_color
-)
+fig = go.Figure()
 
-fig = px.timeline(
-    plot_data,
-    x_start="From_m",
-    x_end="To_m",
-    y="Borehole_ID",
-    color="Lithology",
-    color_discrete_map=LITHOLOGY_COLORS,
-    hover_data=[
-        "From_m",
-        "To_m",
-        "Thickness_m",
-        "Rock_Colour",
-        "Weathering",
-        "Mineralization",
-        "Description",
-    ],
-    title="Lithological Intervals by Borehole",
-)
+for borehole_id in selected_boreholes:
+    borehole_data = selected_data[
+        selected_data["Borehole_ID"] == borehole_id
+    ].sort_values("From_m")
 
-fig.update_yaxes(
-    autorange="reversed",
-    title="Borehole",
-)
+    for _, row in borehole_data.iterrows():
+        lithology = row["Lithology"]
+        color = get_lithology_color(lithology)
 
-fig.update_xaxes(
-    title="Depth (m)",
-    side="top",
-)
+        customdata = [[
+            row["From_m"],
+            row["To_m"],
+            row["Thickness_m"],
+            row["Rock_Colour"],
+            row["Weathering"],
+            row["Mineralization"],
+            row["Description"],
+        ]]
+
+        fig.add_trace(
+            go.Bar(
+                x=[row["Thickness_m"]],
+                y=[borehole_id],
+                base=[row["From_m"]],
+                orientation="h",
+                name=lithology,
+                legendgroup=lithology,
+                showlegend=not any(
+                    trace.name == lithology
+                    for trace in fig.data
+                ),
+                marker=dict(
+                    color=color,
+                    line=dict(color="#FFFFFF", width=0.7),
+                ),
+                customdata=customdata,
+                hovertemplate=(
+                    "<b>%{y}</b><br>"
+                    "Lithology: " + lithology + "<br>"
+                    "From: %{customdata[0]:.2f} m<br>"
+                    "To: %{customdata[1]:.2f} m<br>"
+                    "Thickness: %{customdata[2]:.2f} m<br>"
+                    "Rock colour: %{customdata[3]}<br>"
+                    "Weathering: %{customdata[4]}<br>"
+                    "Mineralization: %{customdata[5]}<br>"
+                    "Description: %{customdata[6]}"
+                    "<extra></extra>"
+                ),
+            )
+        )
 
 fig.update_layout(
+    title="Lithological Intervals by Borehole",
     height=max(450, 180 * len(selected_boreholes)),
+    barmode="overlay",
+    xaxis=dict(
+        title="Depth (m)",
+        side="top",
+        type="linear",
+        rangemode="tozero",
+    ),
+    yaxis=dict(
+        title="Borehole",
+        autorange="reversed",
+    ),
     legend_title="Lithology",
     hoverlabel=dict(align="left"),
+    margin=dict(l=60, r=40, t=90, b=50),
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
 
 st.caption(
     "Each coloured interval represents a logged lithological unit. "
